@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body { @apply bg-paper text-ink font-sans; }
+:focus-visible { outline: 2px solid #0f6b5c; outline-offset: 2px; }
+@layer components {
+  .btn { @apply inline-flex items-center justify-center rounded-md bg-ink px-4 py-2 text-sm font-medium text-white hover:bg-ink/90 disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-ghost { @apply inline-flex items-center justify-center rounded-md border border-line px-4 py-2 text-sm font-medium hover:bg-white disabled:cursor-not-allowed disabled:opacity-50; }
+  .input { @apply w-full rounded-md border border-line bg-white px-3 py-2 text-sm; }
+  .panel { @apply rounded-lg border border-line bg-white p-5; }
+  .badge { @apply inline-flex items-center gap-1 whitespace-nowrap rounded-full border px-2 py-0.5 text-xs font-medium; }
+  .chip { @apply inline-block rounded-full border border-line px-2 py-0.5 text-xs font-medium; }
+}
+
+/* Progress fill and status changes */
+.bar-fill { transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+/* The acknowledgement stamp: a double-ring seal that presses onto the page. */
+.stamp {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 7.5rem; height: 7.5rem; flex: none; border-radius: 9999px; text-align: center;
+  border: 5px double #0f6b5c; color: #0f6b5c; font-family: 'Fraunces', Georgia, serif;
+  transform: rotate(-8deg);
+}
+.stamp-late { border-color: #b45309; color: #b45309; }
+.stamp-in { animation: stamp-press 0.55s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+@keyframes stamp-press {
+  0% { transform: scale(2.4) rotate(-22deg); opacity: 0; }
+  55% { transform: scale(0.93) rotate(-8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-8deg); opacity: 1; }
+}
+
+/* Highlight that fades out when a status flips because someone else (the leader) acted. */
+.flash { animation: flash 1.6s ease-out 1; }
+@keyframes flash { 0% { box-shadow: 0 0 0 4px rgba(15, 107, 92, 0.35); } 100% { box-shadow: 0 0 0 4px rgba(15, 107, 92, 0); } }
+
+.skeleton { @apply animate-pulse rounded-lg bg-line/60; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-fill { transition: none; }
+  .stamp-in, .flash, .skeleton, .pop { animation: none; }
+  .check-draw { animation: none; stroke-dashoffset: 0; }
+}
