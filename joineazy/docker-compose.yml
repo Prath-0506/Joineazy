@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: joineazy
+    volumes: [pgdata:/var/lib/postgresql/data]
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/joineazy
+      JWT_SECRET: change_me_in_production
+      ADMIN_EMAIL: prof@joineazy.com
+      ADMIN_PASSWORD: admin123
+    depends_on: [db]
+  frontend:
+    build: ./frontend
+    ports: ["3000:80"]
+    depends_on: [backend]
+volumes:
+  pgdata:
